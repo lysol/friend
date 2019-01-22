@@ -1,0 +1,25 @@
+{
+  "name": "friend",
+  "version": "1.0.0",
+  "description": "A simple scalable filesystem backed object store suitable for small projects like mock servers, irc bots, and more",
+  "main": "src/friend.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/lysol/friend.git"
+  },
+  "author": "Derek Arnold",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/lysol/friend/issues"
+  },
+  "homepage": "https://github.com/lysol/friend#readme",
+  "dependencies": {
+    "async-lock": "1.1.3",
+    "lodash": "4.17.11",
+    "mkdirp": "0.5.1",
+    "rimraf": "2.6.3"
+  }
+}
