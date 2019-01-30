@@ -1,6 +1,6 @@
 {
   "name": "friend-db",
-  "version": "1.0.2",
+  "version": "1.0.3",
   "description": "A simple scalable filesystem backed object store suitable for small projects like mock servers, irc bots, and more",
   "main": "src/friend.js",
   "scripts": {
