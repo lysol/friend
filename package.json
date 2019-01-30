@@ -4,7 +4,7 @@
   "description": "A simple scalable filesystem backed object store suitable for small projects like mock servers, irc bots, and more",
   "main": "src/friend.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test": "nyc --reporter=lcov mocha tests/**/**.spec.js"
   },
   "repository": {
     "type": "git",
@@ -21,5 +21,16 @@
     "lodash": "4.17.11",
     "mkdirp": "0.5.1",
     "rimraf": "2.6.3"
+  },
+  "devDependencies": {
+    "async": "2.6.1",
+    "chai": "4.2.0",
+    "mocha": "5.2.0",
+    "nyc": "13.1.0"
+  },
+  "nyc": {
+    "exclude": [
+      "**/*.spec.js"
+    ]
   }
 }

@@ -6,7 +6,8 @@ var path = require('path');
 const rmdir = require('rimraf');
 
 const defaultOptions = {
-    keyChunkSize: 3
+  keyChunkSize: 3,
+  keyIndex: '_keys'
 };
 
 class Friend {
@@ -19,6 +20,17 @@ class Friend {
             this.storagePath = `${this.storagePath}${path.sep}`;
         }
         this.lock = new AsyncLock();
+        if (this.options.keyIndex) {
+          this.keyIndex = [];
+          try {
+            const result = fs.readFileSync(this._storagePath(this.options.keyIndex), 'utf8');
+            if (typeof result === 'object' && typeof result.length === 'number') {
+              this.keyIndex = result;
+            }
+          } catch(err) {
+            // pass
+          }
+        }
     }
 
     _chunkedPath(key) {
@@ -89,8 +101,14 @@ class Friend {
             this._keystorePath(key)
                 .then(jsonFile => this.lock.acquire(jsonFile, done =>
                     this._updateStore(jsonFile, key, value)
-                        .then(result => done(undefined, result))
-                        .catch(done), (err, ret) =>
+                      .then(result => {
+                        if (typeof value !== 'undefined' && this.keyIndex.indexOf(key) === -1) {
+                          this.keyIndex.push(key);
+                          this._syncIndex();
+                        }
+                        done(undefined, result);
+                      })
+                      .catch(done), (err, ret) =>
                     err ? rej(err) : res(ret)))
                 .catch(rej);
         });
@@ -109,6 +127,8 @@ class Friend {
     }
 
     unset(key) {
+        this.keyIndex = this.keyIndex.filter(k => k !== key);
+        this._syncIndex();
         return this.set(key, undefined);
     }
 
@@ -122,6 +142,10 @@ class Friend {
           }
         });
       });
+    }
+
+    _syncIndex() {
+      return this.set(this.options.keyIndex, this.keyIndex);
     }
 }
 
