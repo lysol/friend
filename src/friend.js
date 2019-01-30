@@ -145,6 +145,11 @@ class Friend {
       });
     }
 
+    keys(search) {
+      return (search ? this.keyIndex.filter(k => k.match(search)) : this.keyIndex)
+        .filter(k => k !== this.options.keyIndex);
+    }
+
     _syncIndex() {
       return this.set(this.options.keyIndex, this.keyIndex);
     }

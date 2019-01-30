@@ -303,6 +303,21 @@ describe('Friend', () => {
           });
         });
 
+        it('should return a list of all keys', done => {
+          friend.set('test', 'yes')
+            .then(result => friend.set('test2', 'no'))
+            .then(result => {
+              const res = friend.keys();
+              expect(res.length).to.equal(2);
+              expect(res[0]).to.equal('test');
+              expect(res[1]).to.equal('test2');
+              const res2 = friend.keys('2');
+              expect(res2.length).to.equal(1);
+              expect(res2[0]).to.equal('test2');
+              done();
+            })
+            .catch(done);
+        });
     });
 });
 
