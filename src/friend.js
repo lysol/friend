@@ -23,12 +23,16 @@ class Friend {
         if (this.options.keyIndex) {
           this.keyIndex = [];
           try {
-            const result = fs.readFileSync(this._storagePath(this.options.keyIndex), 'utf8');
-            if (typeof result === 'object' && typeof result.length === 'number') {
-              this.keyIndex = result;
+            const result = JSON.parse(fs.readFileSync(this._storagePath(this.options.keyIndex), 'utf8'));
+            if (typeof result === 'object' &&
+              typeof result[this.options.keyIndex] === 'object' &&
+              typeof result[this.options.keyIndex].length === 'number') {
+              this.keyIndex = result[this.options.keyIndex];
             }
           } catch(err) {
-            // pass
+            if (err.code !== 'ENOENT') {
+              throw err;
+            }
           }
         }
     }

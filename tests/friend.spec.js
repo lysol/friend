@@ -319,5 +319,25 @@ describe('Friend', () => {
             .catch(done);
         });
     });
+
+  describe('Further indexing tests', () => {
+    afterEach(done => {
+        rmdir('/tmp/testfriend', () =>
+            rmdir('/tmp/mkdirtest', done));
+    });
+    it('should reindex upon recreation', done => {
+      let mkfriend = () => new Friend('/tmp/testfriend', {keyChunkSize: 5, keyIndex: '_index'});
+      let friend1 = mkfriend();
+      friend1.set('help', 'hi')
+        .then(result => friend1._syncIndex())
+        .then(result => {
+          delete friend1;
+          let friend2 = mkfriend();
+          expect(friend2.keyIndex.length).to.equal(2);
+        })
+        .then(done)
+        .catch(done);
+    });
+  });
 });
 
