@@ -104,7 +104,8 @@ class Friend {
                       .then(result => {
                         if (typeof value !== 'undefined' && this.keyIndex.indexOf(key) === -1) {
                           this.keyIndex.push(key);
-                          this._syncIndex();
+                          this._syncIndex()
+                            .catch(err => rej(err));
                         }
                         done(undefined, result);
                       })
