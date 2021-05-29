@@ -53,16 +53,11 @@ class Friend {
         return path.join.apply(undefined, parts);
     }
 
-    _mkdirRecursive(path) {
-        return new Promise((res, rej) =>
-            mkdirp(path, (err) => err ? rej(err) : res()));
-    }
-
     _keystorePath(key) {
         const finalPath = this._storagePath(key);
         return new Promise((res, rej) =>
             this.lock.acquire(finalPath, done =>
-                this._mkdirRecursive(path.dirname(finalPath))
+                mkdirp(path.dirname(finalPath))
                     .then(() => done())
                     .catch(done), err =>
             err ? rej(err) : res(finalPath)));
